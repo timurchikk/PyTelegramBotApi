@@ -9,23 +9,30 @@ def hi(message):
     a1 = types.KeyboardButton ("Начать")
     markup.add(a1)
 
-    bot.send_message(message.chat.id, "Приветсвую тебя! Загадай число от 1 до 1000, и я угадаю его за 12 вопросов",parse_mode='html', reply_markup=markup)
+    bot.send_message(message.chat.id, "Приветсвую тебя! Я Телеграм бот Тимура, который запускаеться в его сервере!",parse_mode='html', reply_markup=markup)
 @bot.message_handler(content_types=['text'])
 def blablabla(message):
     if message.chat.type == 'private':
+        bot.send_message(message.chat.id, "Давай поиграем!")
         markup = types.InlineKeyboardMarkup(row_width=2)
-        for i in range(1, 4):
-            button1 = types.InlineKeyboardButton("Больше", callback_data='>')
-            button2 = types.InlineKeyboardButton("Меньше", callback_data='<')
-            markup.add(button1, button2)
-            bot.send_message(message.chat.id, "Загаданное число больше или меньше ", "500", "?", reply_markup=markup)
+        button1 = types.InlineKeyboardButton("Давай", callback_data='start')
+        button2 = types.InlineKeyboardButton("Неа", callback_data='stop')
+        markup.add(button1, button2)
+            
 
 
 @bot.callback_query_handler(func=lambda call:True)
 def callback(call):
     try:
-        if call.data == ">":
+        if call.data == "start":
+            markup = types.InlineKeyboardMarkup(row_width=2)
+            bot.send_message(call.message.chat.id, "Ok, выбери число")
+            button1 = types.InlineKeyboardButton("1", callback_data='1')
+            button2 = types.InlineKeyboardButton("2", callback_data='2')
+            markup.add(button1, button2)
+        else:
             bot.send_message(call.message.chat.id, "Ok")
+
     except Exception as e:
         print(e)
 bot.polling(none_stop=True)
